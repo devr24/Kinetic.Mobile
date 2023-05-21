@@ -7,9 +7,9 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.BackgroundColor="White">
 
-    <TabBar Route="LoginPage">
+    <TabBar Route="RegisterPage">
         <ShellContent
-         ContentTemplate="{DataTemplate local:LoginPage}"
+         ContentTemplate="{DataTemplate local:RegisterPage}"
          />
      </TabBar>
     

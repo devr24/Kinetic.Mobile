@@ -2,9 +2,9 @@ using Kinetic.Presentation.Services;
 
 namespace Kinetic.Presentation.View;
 
-public partial class LoginPage : ContentPage
+public partial class RegisterPage : ContentPage
 {
-	public LoginPage()
+	public RegisterPage()
 	{
 		InitializeComponent();
 	}
