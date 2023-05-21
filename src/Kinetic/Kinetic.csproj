@@ -92,9 +92,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="View\LoginPage.xaml">
+	  <MauiXaml Update="View\RegisterPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="View\RegisterPage.xaml.cs">
+	    <DependentUpon>RegisterPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

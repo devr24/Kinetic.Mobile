@@ -33,6 +33,10 @@
             Placeholder="Enter your email" 
             PlaceholderColor="{StaticResource Gray500}"/>
 
+
+
+        <Label x:Name="lbl_error" TextColor="Red" IsVisible="False"/>
+
         <!--Regular Button-->
         <Border
                          x:Name="button_"
