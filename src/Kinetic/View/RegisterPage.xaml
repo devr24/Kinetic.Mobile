@@ -35,6 +35,7 @@
 
 
 
+        <Label x:Name="lbl_spacer" Text=" " />
         <Label x:Name="lbl_error" Text="Please enter a name and valid email" TextColor="Red" IsVisible="False"/>
 
         <!--Regular Button-->

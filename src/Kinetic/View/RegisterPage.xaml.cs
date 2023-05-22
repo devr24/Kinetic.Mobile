@@ -15,10 +15,12 @@ public partial class RegisterPage : ContentPage
         if (string.IsNullOrEmpty(edi_name.Text) || !EmailValidationService.IsValidEmail(edi_email.Text))
         {
             lbl_error.IsVisible = true;
+            lbl_spacer.IsVisible = false;
             return;
         }
 
         lbl_error.IsVisible = false;
+        lbl_spacer.IsVisible = true;
 
         // Save username to Preferences
         Preferences.Set("UserName", edi_name.Text);
