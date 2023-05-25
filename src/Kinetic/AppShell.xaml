@@ -4,15 +4,72 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Kinetic.Presentation.View"
-    Shell.FlyoutBehavior="Disabled"
-    Shell.BackgroundColor="White">
+    >
 
     <TabBar Route="LoginPage">
         <ShellContent
          ContentTemplate="{DataTemplate local:LoginPage}"
          />
      </TabBar>
-    
+
+    <!--Navigation Bottom-->
+    <TabBar Route="Home"
+            Shell.TabBarBackgroundColor="{StaticResource White}"
+            Shell.TabBarUnselectedColor="{StaticResource Gray400}"
+            Shell.TabBarTitleColor="{StaticResource MainTheme}"
+            >
+
+        <ShellContent Route="MainPage"
+         ContentTemplate="{DataTemplate local:MainPage}"
+         Title="Home"
+         Icon="home.svg"             
+         />
+
+        <ShellContent Route="SettingPage" 
+         ContentTemplate="{DataTemplate local:SettingPage}"
+         Title="Setting"            
+         Icon="setting.svg"             
+         />
+
+
+        <ShellContent Route="SessionPage"
+         ContentTemplate="{DataTemplate local:SessionPage}"
+         Title="Session"            
+         Icon="session.svg"             
+         />
+
+        <ShellContent
+             Title="Data Expert"   
+             Icon="data.svg"
+             ContentTemplate="{DataTemplate local:DataExpertPage}"
+             Route="ReportsPage"
+        />
+
+    </TabBar>
+    <!-- End Navigation Bottom-->
+
+    <!--<FlyoutItem FlyoutIcon="dotnet_bot.svg" Route="Home" Shell.TabBarIsVisible="False" Icon="blue_logo.png" FlyoutDisplayOptions="AsMultipleItems">
+
+        <ShellContent Route="MainPage"
+         ContentTemplate="{DataTemplate local:MainPage}"
+         />
+        
+        <ShellContent Route="SettingPage" 
+         ContentTemplate="{DataTemplate local:SettingPage}"
+         Title="Setting"             
+         FlyoutItemIsVisible="False"            
+         />
+
+        <ShellContent Route="SessionPage"
+         ContentTemplate="{DataTemplate local:SessionPage}"
+         />
+
+        <ShellContent Route="DataExpertPage"
+         ContentTemplate="{DataTemplate local:DataExpertPage}"
+         />
+        
+    </FlyoutItem>-->
+
     <!--<ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"

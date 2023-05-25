@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kinetic.Presentation.View.MainPage"
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+            Shell.BackgroundColor="White" 
+            >
+    <!--change status bar color-->
+    <ContentPage.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
+    </ContentPage.Behaviors>
+
+    <Shell.TitleView >
+        <StackLayout >
+            <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
+                   WidthRequest="200" HeightRequest="80" Scale="1.4"
+                  />
+            
+        </StackLayout>
+    </Shell.TitleView>
+
+    <ScrollView>
+        
+         <Grid RowDefinitions="10,*">
+
+
+        <VerticalStackLayout BackgroundColor="White" Grid.Row="0"/>
+
+        <VerticalStackLayout Grid.Row="1" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,0">
+
+            <Border
+              BackgroundColor="White"
+              HeightRequest="300"
+              StrokeShape="RoundRectangle 5"
+              Margin="0,70">
+
+                <Grid RowDefinitions="*,*,*,*">
+
+                    <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="timer.svg" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Session" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"/>
+                    </HorizontalStackLayout>
+
+                    <Grid Grid.Row="1" Grid.RowSpan="2" RowDefinitions="*,*" ColumnDefinitions="*,*" >
+
+                        <Label Text="Time" FontSize="24"  Margin="30,0" VerticalOptions="Center" Grid.Row="0" Grid.Column="0"/>
+                        <Label x:Name="label_time" Text="0:00:00" FontSize="35"   VerticalOptions="Center" HorizontalOptions="Start"  Grid.Row="0" Grid.Column="1"/>
+                        <Label Text="Distance" FontSize="24"  Margin="30,0" VerticalOptions="Center"  Grid.Row="1" Grid.Column="0"/>
+                        <Label x:Name="label_distance" Text="0 Km" FontSize="35"   VerticalOptions="Center"  Grid.Row="1" Grid.Column="1" />
+                    </Grid>
+
+                    <VerticalStackLayout Grid.Row="3">
+                        <BoxView 
+                            BackgroundColor="#24808080"
+                            HeightRequest="1"
+                            Margin="20,20,20,10"
+                         />
+
+                        <HorizontalStackLayout HorizontalOptions="Center">
+                            <Label Text="last seseion" FontAttributes="Italic" TextColor="Gray" FontSize="16"  Margin="5,0" VerticalOptions="Center" HorizontalOptions="Center"/>
+                            <Label x:Name="label_lastsession" FontAttributes="Italic" Text=" 15:45 16/05/23 ( 53 min)" TextColor="Gray" FontSize="16"   VerticalOptions="Center" HorizontalOptions="Center"/>
+
+                        </HorizontalStackLayout>
+     
+
+                    </VerticalStackLayout>
+                    
+                </Grid>
+                
+            </Border>
+
+            <!--Regular Button-->
+            <Border
+                         x:Name="button_"
+                        BackgroundColor="{StaticResource MainTheme}"
+                        HeightRequest="70"
+                        Margin="0,-40"
+                        StrokeShape="RoundRectangle 5"
+                       
+                          >
+
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SessionButtonClick"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout HorizontalOptions="Center">
+
+                    <Image Source="walk.svg" WidthRequest="45" HeightRequest="45"/>
+
+                    <Label
+                                FontSize="20"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                Text="Start Session"
+                                Margin="15,0"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+
+
+                </HorizontalStackLayout>
+               
+
+            </Border>
+            <!--End Regular Button-->
+        </VerticalStackLayout>
+        
+    </Grid>
+    </ScrollView>
+   
+</ContentPage>
