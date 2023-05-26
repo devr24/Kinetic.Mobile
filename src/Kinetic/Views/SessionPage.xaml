@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kinetic.Presentation.Views.SessionPage"
+             Shell.BackgroundColor="White" 
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+            >
+    <!--change status bar color-->
+    <ContentPage.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
+    </ContentPage.Behaviors>
+
+    <Shell.TitleView >
+        <StackLayout >
+            <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
+                   WidthRequest="200" HeightRequest="80" Scale="1.4"
+                  />
+
+        </StackLayout>
+    </Shell.TitleView>
+
+    <ScrollView>
+
+        <Grid RowDefinitions="10,*" BackgroundColor="White">
+
+            <VerticalStackLayout BackgroundColor="White" Grid.Row="0"/>
+            
+            <Grid Grid.Row="1" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,-30">
+
+                <Border
+              BackgroundColor="White"
+              Stroke="white"    
+              StrokeShape="RoundRectangle 3"
+              Margin="0,70">
+
+                    <VerticalStackLayout Padding="5" Margin="15,10">
+
+                        <Grid ColumnDefinitions="40,*,40"   >
+                            <Label Text="Sessions" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"
+                                   HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                        </Grid>
+
+                        <ScrollView
+                          >
+
+                            <CollectionView
+                            x:Name="CollectionSession"
+                            Margin="5,20,5,150"
+                            SelectionMode="Single"
+                            ItemsSource="{Binding  }"
+                             >
+
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical"  ItemSpacing="12" />
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate >
+
+                                        <VerticalStackLayout>
+                                            <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="50">
+
+                                                <Image  Source="timergray.svg" HeightRequest="24" WidthRequest="24"/>
+                                                <Label x:Name="label_time" VerticalOptions="Center"  Text="{Binding Time}" FontSize="Small"/>
+
+                                                <Image Source="walkgray.svg" HeightRequest="24" WidthRequest="24" />
+                                                <Label x:Name="label_walk" VerticalOptions="Center" Text="{Binding Session}" FontSize="Small"/>
+
+                                                <Image  Source="session.svg"  HeightRequest="24" WidthRequest="24"/>
+                                                <Label x:Name="label_session" VerticalOptions="Center"  Text="{Binding Grid}" FontSize="Small"/>
+
+                                            </HorizontalStackLayout>
+
+                                            <BoxView HeightRequest="1" BackgroundColor="LightGray"/>
+
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup Name="CommonStates">
+                                                    <VisualState Name="Normal"></VisualState>
+                                                    <VisualState Name="Selected">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" Value="white"></Setter>
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </VerticalStackLayout>
+                                        
+
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                        </ScrollView>
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+    </ScrollView>
+    
+  
+</ContentPage>

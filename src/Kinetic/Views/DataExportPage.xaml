@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kinetic.Presentation.Views.DataExportPage"
+             Shell.BackgroundColor="White" 
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             
+            >
+    <!--change status bar color-->
+    <ContentPage.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
+    </ContentPage.Behaviors>
+
+    <Shell.TitleView >
+        <StackLayout >
+            <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
+                   WidthRequest="200" HeightRequest="80" Scale="1.4"
+                  />
+
+        </StackLayout>
+    </Shell.TitleView>
+
+    <ScrollView>
+
+        <Grid RowDefinitions="10,200,*">
+
+
+            <VerticalStackLayout BackgroundColor="White" Grid.Row="0"/>
+
+            <VerticalStackLayout Grid.Row="1" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,-30">
+
+                <Border
+              BackgroundColor="White"
+              HeightRequest="200"
+              Stroke="white"    
+              StrokeShape="RoundRectangle 3"
+              Margin="0,70">
+
+                    <VerticalStackLayout Padding="5" Margin="15,10">
+
+                        <Grid ColumnDefinitions="40,*,40" Margin="0,0,0,20"  >
+                            <Label Text="Data Export" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"
+                                   HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                            <ImageButton Source="edit.svg"   WidthRequest="24" HeightRequest="30" Grid.Column="2"/>
+                        </Grid>
+
+                        <HorizontalStackLayout>
+                            <Label Text="Last Exports:  " FontSize="Medium" />
+                            <Label x:Name="label_last_exports" Text="15:00 18/05/23" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="0,10">
+                            <Label Text="Sessions:  " FontSize="Medium" />
+                            <Label x:Name="label_session" Text="12(3.6hrs)" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!--End Regular Button-->
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="2" BackgroundColor="{StaticResource SecendryTheme}" Padding="20, 30,20,0" >
+
+                <!--Regular Button-->
+                <Border
+                         x:Name="button_expert"
+                        BackgroundColor="{StaticResource MainTheme}"
+                        StrokeShape="RoundRectangle 5"
+                        HeightRequest="50"
+                          >
+               
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="button_expert_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Label
+                                FontSize="Medium"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                Text="Export"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+
+                </Border>
+                <!--End Regular Button-->
+
+                <!--Outline Button-->
+                <Border
+                           x:Name="button_clear_data"
+                           Stroke="{StaticResource MainTheme}"
+                           StrokeThickness="1"
+                           StrokeShape="RoundRectangle 5"
+                           Grid.Column="1"
+                           Grid.Row="1"
+                            HeightRequest="50"
+                    Margin="0,10"
+                              >
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="button_clear_data_Tapped"/>
+                    </Border.GestureRecognizers>
+
+                    <Label
+                                FontSize="Medium"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource MainTheme}"
+                                Text="Clear Data"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+
+
+                    </Label>
+
+                </Border>
+                <!--End Outline Button-->
+
+            </VerticalStackLayout>
+        </Grid>
+
+    </ScrollView>
+
+</ContentPage>

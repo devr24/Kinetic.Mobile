@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kinetic.Presentation.Views.LoginPage"
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+            xmlns:local="clr-namespace:Kinetic.Presentation.Controls" 
+              >
+
+    <!--change status bar color-->
+    <ContentPage.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
+    </ContentPage.Behaviors>
+
+    <ScrollView>
+        <VerticalStackLayout Margin="20,50" HorizontalOptions="Center">
+
+            <Image Source="blue_logo.png" HeightRequest="200" WidthRequest="320"/>
+
+            <Label Text="Welcome" FontSize="32" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="0, -50"/>
+            <Label Text="You've been invited to participate in the Kinetic trial.  Let's get to know you." 
+               FontSize="18"  HorizontalTextAlignment="Center"  Margin="0,100"/>
+
+
+            <StackLayout>
+
+            <local:CustomEntry  
+            x:Name="edi_name"
+            FontSize="20"
+            Placeholder="Enter your name" 
+            PlaceholderColor="{StaticResource Gray500}"
+            Focused="edi_name_Focused"
+            Unfocused="edi_name_Unfocused"    
+                />
+
+                <Button x:Name="line_name" HeightRequest="1"  BackgroundColor="Gray"/>
+
+            </StackLayout>
+
+
+
+            <StackLayout    Margin="0,20" >
+
+            <local:CustomEntry
+             x:Name="edi_email"
+            Keyboard="Email"
+            FontSize="20"
+            Focused="edi_email_Focused"
+            Unfocused="edi_email_Unfocused"     
+            Placeholder="Enter your email" 
+            PlaceholderColor="{StaticResource Gray500}"
+                />
+
+                <Button x:Name="line_email" HeightRequest="1"   BackgroundColor="Gray"/>
+
+            </StackLayout>
+
+
+
+            <Label x:Name="lbl_spacer" Text=" " />
+            <Label x:Name="lbl_error" Text="Please enter a name and valid email" TextColor="Red" IsVisible="False"/>
+
+
+
+            <!--Regular Button-->
+            <Border
+                         x:Name="button_"
+                        BackgroundColor="{StaticResource MainTheme}"
+                        HeightRequest="55"
+                        StrokeShape="RoundRectangle 5"
+                        Margin="0,70"
+                          >
+
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SaveButtonClick"/>
+                </Border.GestureRecognizers>
+
+                <Label
+                                FontSize="Medium"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                Text="Let's go!"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+
+            </Border>
+            <!--End Regular Button-->
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+    
+</ContentPage>

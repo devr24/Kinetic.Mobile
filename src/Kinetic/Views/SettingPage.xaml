@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kinetic.Presentation.Views.SettingPage"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             Shell.BackgroundColor="White" 
+            >
+    <!--change status bar color-->
+    <ContentPage.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
+    </ContentPage.Behaviors>
+
+    <Shell.TitleView >
+        <StackLayout >
+            <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
+                   WidthRequest="200" HeightRequest="80" Scale="1.4"
+                  />
+
+        </StackLayout>
+    </Shell.TitleView>
+
+    <ScrollView>
+
+        <Grid RowDefinitions="10,200,*">
+
+
+            <VerticalStackLayout BackgroundColor="White" Grid.Row="0"/>
+
+            <VerticalStackLayout Grid.Row="1" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,-30">
+
+              <Border
+              BackgroundColor="White"
+              HeightRequest="200"
+              Stroke="white"    
+              StrokeShape="RoundRectangle 3"
+              Margin="0,70">
+
+                    <VerticalStackLayout Padding="5" Margin="15,10">
+
+                        <Grid ColumnDefinitions="40,*,40" Margin="0,0,0,20"   >
+                            <Label Text="Account" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"
+                                   HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                            <ImageButton Source="edit.svg"   WidthRequest="24" HeightRequest="30" Grid.Column="2"/>
+                        </Grid>
+                        
+                        <HorizontalStackLayout>
+                            <Label Text="Name:  " FontSize="Medium" />
+                            <Label x:Name="label_name" Text="Joe Bloggs" FontSize="Medium" />
+                        </HorizontalStackLayout>
+                        
+                        <HorizontalStackLayout>
+                            <Label Text="Email:  " FontSize="Medium" />
+                            <Label x:Name="label_Email" Text="joe.bloggs@gmails.com" FontSize="Medium" />
+                        </HorizontalStackLayout>
+                        
+                    </VerticalStackLayout>
+
+                </Border>
+ 
+                <!--End Regular Button-->
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="2" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,-30">
+
+                <Border
+              BackgroundColor="White"
+              HeightRequest="300"
+              Stroke="white"    
+              StrokeShape="RoundRectangle 3"
+              Margin="0,70">
+
+                    <VerticalStackLayout Padding="5" Margin="15,10">
+
+                        <Grid ColumnDefinitions="40,*,40" Margin="0,0,0,20"   >
+                            <Label Text="Device Info" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"
+                                   HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                        </Grid>
+
+                        <HorizontalStackLayout>
+                            <Label Text="Device Id:  " FontSize="Medium" />
+                            <Label x:Name="label_decive_name" Text="334653545632-237436" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <Label Text="Model:  " FontSize="Medium" />
+                            <Label x:Name="label_model" Text="sdk_gphone64" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <Label Text="Manufacturer:  " FontSize="Medium" />
+                            <Label x:Name="label_manufacturer" Text="Google" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <Label Text="Name:  " FontSize="Medium" />
+                            <Label x:Name="label_phone_name" Text="Galaxy_S21" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+
+                        <HorizontalStackLayout>
+                            <Label Text="OS:  " FontSize="Medium" />
+                            <Label x:Name="label_OS" Text="Version 13" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <Label Text="Idiom:  " FontSize="Medium" />
+                            <Label x:Name="label_idom" Text="Phone" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <Label Text="Platform:  " FontSize="Medium" />
+                            <Label x:Name="label_platform" Text="Android" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <Label Text="App Version:  " FontSize="Medium" />
+                            <Label x:Name="label_version" Text="1.0.1 beta" FontSize="Medium" />
+                        </HorizontalStackLayout>
+
+
+                    </VerticalStackLayout>
+                </Border>
+                </VerticalStackLayout>
+        </Grid>
+
+    </ScrollView>
+    
+
+
+</ContentPage>
