@@ -128,10 +128,4 @@
 	  </MauiXaml>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="View\RegisterPage.xaml.cs">
-	    <DependentUpon>RegisterPage.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
 </Project>

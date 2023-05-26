@@ -6,12 +6,6 @@
     xmlns:local="clr-namespace:Kinetic.Presentation.Views"
     >
 
-    <TabBar Route="RegisterPage">
-        <ShellContent
-         ContentTemplate="{DataTemplate local:RegisterPage}"
-         />
-     </TabBar>
-
     <!--Navigation Bottom-->
     <TabBar Route="Home"
             Shell.TabBarBackgroundColor="{StaticResource White}"
