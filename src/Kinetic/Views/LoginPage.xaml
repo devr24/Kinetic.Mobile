@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kinetic.Presentation.View.LoginPage"
+             x:Class="Kinetic.Presentation.Views.LoginPage"
             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-            xmlns:local="clr-namespace:Kinetic.Presentation.Custom_Controler" 
+            xmlns:local="clr-namespace:Kinetic.Presentation.Controls" 
               >
 
     <!--change status bar color-->
@@ -53,10 +53,14 @@
                 <Button x:Name="line_email" HeightRequest="1"   BackgroundColor="Gray"/>
 
             </StackLayout>
-            
-            
-            
-            
+
+
+
+            <Label x:Name="lbl_spacer" Text=" " />
+            <Label x:Name="lbl_error" Text="Please enter a name and valid email" TextColor="Red" IsVisible="False"/>
+
+
+
             <!--Regular Button-->
             <Border
                          x:Name="button_"

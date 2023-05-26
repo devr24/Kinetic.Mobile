@@ -1,8 +1,8 @@
-namespace Kinetic.Presentation.View;
+namespace Kinetic.Presentation.Views;
 
-public partial class DataExpertPage : ContentPage
+public partial class DataExportPage : ContentPage
 {
-	public DataExpertPage()
+	public DataExportPage()
 	{
 		InitializeComponent();
 	}

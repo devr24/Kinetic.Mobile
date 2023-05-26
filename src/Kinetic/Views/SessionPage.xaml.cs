@@ -1,6 +1,6 @@
 using Kinetic.Presentation.Models;
 
-namespace Kinetic.Presentation.View;
+namespace Kinetic.Presentation.Views;
 
 public partial class SessionPage : ContentPage
 {
