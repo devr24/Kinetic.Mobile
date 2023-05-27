@@ -94,19 +94,29 @@
 	  <None Remove="Resources\Images\setting.png" />
 	  <None Remove="Resources\Images\setting.svg" />
 	  <None Remove="Resources\Images\timer.svg" />
+	  <None Remove="Resources\Images\success_green.svg" />
 	  <None Remove="Resources\Images\timergray.svg" />
 	  <None Remove="Resources\Images\walk.svg" />
 	  <None Remove="Resources\Images\walkgray.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.0-pre20220207221914" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.0-pre20220207221914" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.0-pre20220207221914" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.0-pre20220207221914" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Views\DataExportPage.xaml.cs">
 	    <DependentUpon>DataExportPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SessionSummary.xaml.cs">
+	    <DependentUpon>SessionSummary.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 

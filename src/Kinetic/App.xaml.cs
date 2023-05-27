@@ -1,14 +1,20 @@
 ﻿using Kinetic.Presentation.Controls;
+using MauiDemo.Presentation.Data;
 
 namespace Kinetic;
 
 public partial class App : Application
 {
-	public App()
+    public App()
 	{
 		InitializeComponent();
 
-		MainPage = new AppShell();
+        Task.Run(async () => { 
+            Database.Instance = new Database();
+            await Database.Instance.InitializeKinetictTables();
+        });
+
+        MainPage = new AppShell();
 
 		Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(CustomEntry),
 			(handler, view) =>

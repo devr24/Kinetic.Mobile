@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="Kinetic.Presentation.Views.SessionSummary">
+
+    <ScrollView BackgroundColor="White">
+            <VerticalStackLayout VerticalOptions="Center" Padding="20,20,20,20">
+
+                <HorizontalStackLayout VerticalOptions="Center">
+                    <Image Source="success_green.svg" WidthRequest="60" HeightRequest="60"/>
+                    <Label Text="Completed" FontSize="32" FontAttributes="Bold" Margin="30,30"  />
+                </HorizontalStackLayout>
+
+
+                <HorizontalStackLayout VerticalOptions="Center" Margin="0,30">
+                    <Label Text="Id:" FontSize="14" FontAttributes="Bold" />
+                    <Label x:Name="lbl_SessionId" FontSize="14" Margin="20,0" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout VerticalOptions="Center">
+                    <Label Text="Started:" FontSize="14" FontAttributes="Bold" />
+                    <Label x:Name="lbl_SessionStarted" FontSize="20" Margin="20,0" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout VerticalOptions="Center">
+                    <Label Text="Duration:" FontSize="14" FontAttributes="Bold" />
+                    <Label x:Name="lbl_SessionDuration" FontSize="20" Margin="20,0" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout VerticalOptions="Center">
+                    <Label Text="Distance:" FontSize="14" FontAttributes="Bold" />
+                    <Label x:Name="lbl_SessionDistance" FontSize="20" Margin="20,0" />
+                </HorizontalStackLayout>
+
+
+                <!--Regular Button-->
+                <Border
+                    x:Name="btn_okay"
+                    BackgroundColor="{StaticResource MainTheme}"
+                    HeightRequest="55"
+                    StrokeShape="RoundRectangle 5"
+                    Margin="0,70"
+                >
+
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OkButton_OnTapped"/>
+                    </Border.GestureRecognizers>
+
+                    <Label
+                        FontSize="Medium"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        Text="OK"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+
+                </Border>
+                <!--End Regular Button-->
+            </VerticalStackLayout>
+        </ScrollView>
+
+
+</toolkit:Popup>

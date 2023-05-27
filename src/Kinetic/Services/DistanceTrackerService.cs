@@ -1,6 +1,5 @@
-﻿using Microsoft.Maui.Devices.Sensors;
-using System.Diagnostics;
-using System.Numerics;
+﻿using System.Numerics;
+using Kinetic.Presentation.Filters;
 
 namespace Kinetic.Presentation.Services
 {
@@ -12,9 +11,8 @@ namespace Kinetic.Presentation.Services
     public class TrackingData
     {
         public Vector3 AccelerometerReading { get; set; }
-        public double Distance { get; set; }
-        public TimeSpan? Time { get; set; }
-        public Location Location { get; set; }
+        public double DistanceMoved { get; set; }
+        public Location GeoLocation { get; set; }
     }
 
     public class DistanceTracker
@@ -28,8 +26,7 @@ namespace Kinetic.Presentation.Services
         private DateTime _lastReadingTime = DateTime.MinValue;
         private readonly TimeSpan _readingInterval = TimeSpan.FromMilliseconds(500);
         private readonly LowPassFilter _lowPassFilter = new (0.9);
-        private Timer _timer = null;
-        private int _ticks = 0;
+        private Timer _timer;
         public event EventHandler<DistanceTrackingEventArgs> TrackingCaptured;
 
         public void StartTracking()
@@ -38,7 +35,6 @@ namespace Kinetic.Presentation.Services
             
             // Register for accelerometer changes, speed = fastest
             _distance = 0;
-            _ticks = 0;
             _trackingEnabled = true;
             _timer = new Timer(Callback,null,1000,1000);
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
@@ -47,8 +43,7 @@ namespace Kinetic.Presentation.Services
 
         private void Callback(object state)
         {
-            _ticks += 1000;
-            TrackingCaptured?.Invoke(state, new DistanceTrackingEventArgs { TrackingData = LastTrackingData});
+            TrackingCaptured?.Invoke(null, new DistanceTrackingEventArgs { TrackingData = LastTrackingData});
         }
 
         public void StopTracking()
@@ -67,9 +62,8 @@ namespace Kinetic.Presentation.Services
         public TrackingData LastTrackingData =>
             new()
             {
-                Time = TimeSpan.FromSeconds(_ticks),
-                Location = _previousLocation,
-                Distance = _distance,
+                GeoLocation = _previousLocation,
+                DistanceMoved = _distance,
                 AccelerometerReading = _accelerometerData
             };
 
@@ -139,23 +133,5 @@ namespace Kinetic.Presentation.Services
         }
     }
 
-    public class LowPassFilter
-    {
-        private readonly double _alpha;
-        private Vector3 _lastOutput;
 
-        public LowPassFilter(double alpha)
-        {
-            _alpha = alpha;
-        }
-
-        public Vector3 Filter(Vector3 input)
-        {
-            _lastOutput.X = (float)(_alpha * _lastOutput.X + (1.0 - _alpha) * input.X);
-            _lastOutput.Y = (float)(_alpha * _lastOutput.Y + (1.0 - _alpha) * input.Y);
-            _lastOutput.Z = (float)(_alpha * _lastOutput.Z + (1.0 - _alpha) * input.Z);
-
-            return _lastOutput;
-        }
-    }
 }
