@@ -8,13 +8,13 @@ public partial class LoginPage : ContentPage
 	{
 		InitializeComponent();
 
-        var username = Preferences.Get("UserName", null);
-        var email = Preferences.Get("UserEmail", null);
+        //var username = Preferences.Get("UserName", null);
+        //var email = Preferences.Get("UserEmail", null);
 
-        if (username != null && email != null)
-        {
-            Shell.Current.GoToAsync("//Home/" + nameof(MainPage)).GetAwaiter().GetResult();
-        }
+        //if (username != null && email != null)
+        //{
+        //    Shell.Current.GoToAsync("//Home/" + nameof(MainPage)).GetAwaiter().GetResult();
+        //}
     }
 
     private async void SaveButtonClick(object sender, TappedEventArgs e)

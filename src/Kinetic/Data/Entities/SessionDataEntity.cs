@@ -2,7 +2,7 @@
 
 namespace Kinetic.Presentation.Data.Entities;
 
-public struct SessionDataEntity
+public class SessionDataEntity
 {
     [PrimaryKey]
     public Guid Id { get; set; }

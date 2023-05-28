@@ -3,52 +3,54 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Kinetic.Presentation.Views.SessionPage"
              Shell.BackgroundColor="White" 
-            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-            >
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:views="clr-namespace:Kinetic.Presentation.Views">
+   
     <!--change status bar color-->
     <ContentPage.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
     </ContentPage.Behaviors>
 
-    <Shell.TitleView >
-        <StackLayout >
-            <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
-                   WidthRequest="200" HeightRequest="80" Scale="1.4"
-                  />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <views:StringToColorConverter x:Key="ColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
+    <Shell.TitleView>
+        <StackLayout>
+            <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
+                   WidthRequest="200" HeightRequest="80" Scale="1.4" />
         </StackLayout>
     </Shell.TitleView>
 
-    <ScrollView>
+    <ScrollView BackgroundColor="{StaticResource SecendryTheme}">
 
-        <Grid RowDefinitions="10,*" BackgroundColor="White">
-
-            <VerticalStackLayout BackgroundColor="White" Grid.Row="0"/>
-            
-            <Grid Grid.Row="1" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,-30">
+        <Grid RowDefinitions="5,Auto,Auto">
+            <VerticalStackLayout Grid.Row="0"/>
+            <VerticalStackLayout Grid.Row="1" Padding="10">
 
                 <Border
-              BackgroundColor="White"
-              Stroke="white"    
-              StrokeShape="RoundRectangle 3"
-              Margin="0,70">
+                  BackgroundColor="White"
+                  MinimumHeightRequest="280"
+                  StrokeShape="RoundRectangle 5"
+                  Margin="0,10">
 
-                    <VerticalStackLayout Padding="5" Margin="15,10">
 
-                        <Grid ColumnDefinitions="40,*,40"   >
-                            <Label Text="Sessions" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"
-                                   HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
-                        </Grid>
+                    <Grid RowDefinitions="*,*,*,*">
 
-                        <ScrollView
-                          >
+                        <HorizontalStackLayout Grid.Row="0"  HorizontalOptions="Center" VerticalOptions="Start">
+                            <Image Source="timer.svg" WidthRequest="24" HeightRequest="24"/>
+                            <Label Text="Sessions" FontSize="22" Margin="5,10"  TextColor="{StaticResource MainTheme}"/>
+                        </HorizontalStackLayout>
+
+                        <ScrollView Grid.Row="1" Grid.RowSpan="3" x:Name="ScrollView" VerticalOptions="Start">
 
                             <CollectionView
-                            x:Name="CollectionSession"
-                            Margin="5,20,5,150"
-                            SelectionMode="Single"
-                            ItemsSource="{Binding  }"
-                             >
+                                x:Name="CollectionSession"
+                                Margin="5,-10,5,0"
+                                SelectionMode="Single"
+                                ItemsSource="{Binding  }">
 
                                 <CollectionView.ItemsLayout>
                                     <LinearItemsLayout Orientation="Vertical"  ItemSpacing="12" />
@@ -58,16 +60,16 @@
                                     <DataTemplate >
 
                                         <VerticalStackLayout>
-                                            <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="50">
+                                            <HorizontalStackLayout Spacing="6" HorizontalOptions="Start" VerticalOptions="Center" HeightRequest="50">
 
                                                 <Image  Source="timergray.svg" HeightRequest="24" WidthRequest="24"/>
-                                                <Label x:Name="label_time" VerticalOptions="Center"  Text="{Binding Time}" FontSize="Small"/>
+                                                <Label x:Name="label_time" VerticalOptions="Center"  Text="{Binding Session}" TextColor="{Binding TextColor, Converter = {StaticResource ColorConverter}}" FontSize="Small"/>
 
                                                 <Image Source="walkgray.svg" HeightRequest="24" WidthRequest="24" />
-                                                <Label x:Name="label_walk" VerticalOptions="Center" Text="{Binding Session}" FontSize="Small"/>
+                                                <Label x:Name="label_walk" VerticalOptions="Center" Text="{Binding TotalTime}" FontSize="Small"/>
 
                                                 <Image  Source="session.svg"  HeightRequest="24" WidthRequest="24"/>
-                                                <Label x:Name="label_session" VerticalOptions="Center"  Text="{Binding Grid}" FontSize="Small"/>
+                                                <Label x:Name="label_session" VerticalOptions="Center"  Text="{Binding Distance}" FontSize="Small"/>
 
                                             </HorizontalStackLayout>
 
@@ -85,19 +87,20 @@
                                                 </VisualStateGroup>
                                             </VisualStateManager.VisualStateGroups>
                                         </VerticalStackLayout>
-                                        
+
 
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
 
                         </ScrollView>
+                    </Grid>
 
-                    </VerticalStackLayout>
 
                 </Border>
 
-            </Grid>
+            </VerticalStackLayout>
+
 
         </Grid>
 

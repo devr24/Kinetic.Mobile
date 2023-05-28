@@ -11,32 +11,26 @@
         <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
     </ContentPage.Behaviors>
 
-    <Shell.TitleView >
-        <StackLayout >
+    <Shell.TitleView>
+        <StackLayout>
             <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
-                   WidthRequest="200" HeightRequest="80" Scale="1.4"
-                  />
-
+                   WidthRequest="200" HeightRequest="80" Scale="1.4" />
         </StackLayout>
     </Shell.TitleView>
 
-    <ScrollView>
+    <ScrollView  BackgroundColor="{StaticResource SecendryTheme}">
 
-        <Grid RowDefinitions="10,200,*">
-
-
-            <VerticalStackLayout BackgroundColor="White" Grid.Row="0"/>
-
-            <VerticalStackLayout Grid.Row="1" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,-30">
+        <Grid RowDefinitions="5,180,*">
+            <VerticalStackLayout Grid.Row="0"/>
+            <VerticalStackLayout Grid.Row="1" Padding="10">
 
                 <Border
-              BackgroundColor="White"
-              HeightRequest="200"
-              Stroke="white"    
-              StrokeShape="RoundRectangle 3"
-              Margin="0,70">
+                  BackgroundColor="White"
+                  HeightRequest="180"
+                  StrokeShape="RoundRectangle 5"
+                  Margin="0,10,0,10">
 
-                    <VerticalStackLayout Padding="5" Margin="15,10">
+                    <VerticalStackLayout Padding="5" Margin="15,0">
 
                         <Grid ColumnDefinitions="40,*,40" Margin="0,0,0,20"  >
                             <Label Text="Data Export" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"
@@ -45,13 +39,13 @@
                         </Grid>
 
                         <HorizontalStackLayout>
-                            <Label Text="Last Exports:  " FontSize="Medium" />
-                            <Label x:Name="label_last_exports" Text="15:00 18/05/23" FontSize="Medium" />
+                            <Label Text="Last Export:  " FontSize="Medium" />
+                            <Label x:Name="label_last_exports" Text="N/A" FontSize="Medium" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Margin="0,10">
                             <Label Text="Sessions:  " FontSize="Medium" />
-                            <Label x:Name="label_session" Text="12(3.6hrs)" FontSize="Medium" />
+                            <Label x:Name="label_session" Text="0" FontSize="Medium" />
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>
@@ -61,7 +55,7 @@
                 <!--End Regular Button-->
             </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Row="2" BackgroundColor="{StaticResource SecendryTheme}" Padding="20, 30,20,0" >
+            <VerticalStackLayout Grid.Row="2" BackgroundColor="{StaticResource SecendryTheme}" Padding="10" >
 
                 <!--Regular Button-->
                 <Border
@@ -92,10 +86,8 @@
                            Stroke="{StaticResource MainTheme}"
                            StrokeThickness="1"
                            StrokeShape="RoundRectangle 5"
-                           Grid.Column="1"
-                           Grid.Row="1"
                             HeightRequest="50"
-                    Margin="0,10"
+                    Margin="0,5"
                               >
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="button_clear_data_Tapped"/>

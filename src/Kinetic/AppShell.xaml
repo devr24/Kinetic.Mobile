@@ -19,21 +19,20 @@
          Icon="home.svg"             
          />
 
+        <ShellContent Route="SessionPage"
+         ContentTemplate="{DataTemplate local:SessionPage}"
+         Title="Sessions"            
+         Icon="session.svg"             
+         />
+
         <ShellContent Route="SettingPage" 
          ContentTemplate="{DataTemplate local:SettingPage}"
          Title="Setting"            
          Icon="setting.svg"             
          />
 
-
-        <ShellContent Route="SessionPage"
-         ContentTemplate="{DataTemplate local:SessionPage}"
-         Title="Session"            
-         Icon="session.svg"             
-         />
-
         <ShellContent
-             Title="Data Expert"   
+             Title="Data Export"   
              Icon="data.svg"
              ContentTemplate="{DataTemplate local:DataExportPage}"
              Route="ReportsPage"

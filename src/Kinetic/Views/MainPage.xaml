@@ -2,94 +2,88 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Kinetic.Presentation.Views.MainPage"
-            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-            Shell.BackgroundColor="White" 
-            >
+             Shell.BackgroundColor="White" 
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui">
+
+
     <!--change status bar color-->
     <ContentPage.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="{StaticResource  StatusColor}"  />
     </ContentPage.Behaviors>
 
-    <Shell.TitleView >
-        <StackLayout >
+    <Shell.TitleView>
+        <StackLayout>
             <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
-                   WidthRequest="200" HeightRequest="80" Scale="1.4"
-                  />
-            
+                   WidthRequest="200" HeightRequest="80" Scale="1.4" />
         </StackLayout>
     </Shell.TitleView>
 
-    <ScrollView>
-        
-         <Grid RowDefinitions="10,*">
+    <ScrollView BackgroundColor="{StaticResource SecendryTheme}">
 
+        <Grid RowDefinitions="5,Auto">
+            <VerticalStackLayout Grid.Row="0"/>
+            <VerticalStackLayout Grid.Row="1" Padding="10">
 
-        <VerticalStackLayout BackgroundColor="White" Grid.Row="0"/>
+                <Border
+                  BackgroundColor="White"
+                  MinimumHeightRequest="200"
+                  StrokeShape="RoundRectangle 5"
+                  Margin="0,10">
 
-        <VerticalStackLayout Grid.Row="1" BackgroundColor="{StaticResource SecendryTheme}" Padding="20,0">
+                    <Grid RowDefinitions="*,*,*,*">
 
-            <Border
-              BackgroundColor="White"
-              HeightRequest="300"
-              StrokeShape="RoundRectangle 5"
-              Margin="0,70">
+                        <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Start">
+                            <Image Source="timer.svg" WidthRequest="24" HeightRequest="24"/>
+                            <Label Text="Session" FontSize="22" Margin="5,10"  TextColor="{StaticResource MainTheme}"/>
+                        </HorizontalStackLayout>
 
-                <Grid RowDefinitions="*,*,*,*">
+                        <Grid Grid.Row="1" Grid.RowSpan="2" RowDefinitions="*,*" ColumnDefinitions="*,*" >
 
-                    <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center">
-                        <Image Source="timer.svg" WidthRequest="24" HeightRequest="24"/>
-                        <Label Text="Session" FontSize="22" Margin="5,0"  TextColor="{StaticResource MainTheme}"/>
-                    </HorizontalStackLayout>
+                            <Label Text="Time" FontSize="24"  Margin="20,0" VerticalOptions="Center" Grid.Row="0" Grid.Column="0"/>
+                            <Label x:Name="label_time" Text="00:00:00" FontSize="24"   VerticalOptions="Center" HorizontalOptions="Start"  Grid.Row="0" Grid.Column="1"/>
+                            <Label Text="Distance" FontSize="24"  Margin="20,0" VerticalOptions="Center"  Grid.Row="1" Grid.Column="0"/>
+                            <Label x:Name="label_distance" Text="00.0 km" FontSize="24"   VerticalOptions="Center"  Grid.Row="1" Grid.Column="1" />
+                        </Grid>
 
-                    <Grid Grid.Row="1" Grid.RowSpan="2" RowDefinitions="*,*" ColumnDefinitions="*,*" >
-
-                        <Label Text="Time" FontSize="24"  Margin="30,0" VerticalOptions="Center" Grid.Row="0" Grid.Column="0"/>
-                        <Label x:Name="label_time" Text="00:00:00" FontSize="32"   VerticalOptions="Center" HorizontalOptions="Start"  Grid.Row="0" Grid.Column="1"/>
-                        <Label Text="Distance" FontSize="24"  Margin="30,0" VerticalOptions="Center"  Grid.Row="1" Grid.Column="0"/>
-                        <Label x:Name="label_distance" Text="00.0 km" FontSize="32"   VerticalOptions="Center"  Grid.Row="1" Grid.Column="1" />
-                    </Grid>
-
-                    <VerticalStackLayout Grid.Row="3">
-                        <BoxView 
+                        <!--<VerticalStackLayout Grid.Row="3">
+                            <BoxView 
                             BackgroundColor="#24808080"
                             HeightRequest="1"
                             Margin="20,20,20,10"
                          />
 
-                        <HorizontalStackLayout HorizontalOptions="Center">
-                            <Label Text="last session" FontAttributes="Italic" TextColor="Gray" FontSize="16"  Margin="5,0" VerticalOptions="Center" HorizontalOptions="Center"/>
-                            <Label x:Name="label_lastsession" FontAttributes="Italic" Text=" 15:45 16/05/23 (53 min)" TextColor="Gray" FontSize="16"   VerticalOptions="Center" HorizontalOptions="Center"/>
+                            <HorizontalStackLayout HorizontalOptions="Center">
+                                <Label Text="last session" FontAttributes="Italic" TextColor="Gray" FontSize="16"  Margin="5,0" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                <Label x:Name="label_lastsession" FontAttributes="Italic" Text=" 15:45 16/05/23 (53 min)" TextColor="Gray" FontSize="16"   VerticalOptions="Center" HorizontalOptions="Center"/>
 
-                        </HorizontalStackLayout>
-     
-
-                    </VerticalStackLayout>
-                    
-                </Grid>
-                
-            </Border>
+                            </HorizontalStackLayout>
 
 
-            <!--Regular Button-->
-            <Border
+                        </VerticalStackLayout>-->
+                    </Grid>
+
+                </Border>
+
+                <!--Regular Button-->
+                <Border
                          x:Name="button_"
                         BackgroundColor="{StaticResource MainTheme}"
                         HeightRequest="70"
-                        Margin="0,-40"
+                        Margin="0,5,0,10"
                         StrokeShape="RoundRectangle 5"
                        
                           >
 
 
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="SessionButtonClick"/>
-                </Border.GestureRecognizers>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="SessionButtonClick"/>
+                    </Border.GestureRecognizers>
 
-                <HorizontalStackLayout HorizontalOptions="Center">
+                    <HorizontalStackLayout HorizontalOptions="Center">
 
-                    <Image Source="walk.svg" WidthRequest="45" HeightRequest="45"/>
+                        <Image Source="walk.svg" WidthRequest="45" HeightRequest="45"/>
 
-                    <Label x:Name="lbl_SessionStartStop"
+                        <Label x:Name="lbl_SessionStartStop"
                                 FontSize="20"
                                 FontAttributes="Bold"
                                 TextColor="White"
@@ -99,14 +93,14 @@
                                 VerticalOptions="Center"/>
 
 
-                </HorizontalStackLayout>
-               
+                    </HorizontalStackLayout>
 
-            </Border>
-            <!--End Regular Button-->
-        </VerticalStackLayout>
-        
-    </Grid>
+
+                </Border>
+                <!--End Regular Button-->
+
+            </VerticalStackLayout>
+        </Grid>
     </ScrollView>
    
 </ContentPage>

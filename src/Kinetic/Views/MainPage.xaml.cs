@@ -26,9 +26,20 @@ public partial class MainPage : ContentPage
         
         _sessionTimer.Elapsed += OnSessionTimer_Elapsed;
         _tracker.TrackingCaptured += _tracker_TrackingCaptured;
+
+        GetUserData().GetAwaiter().GetResult();
     }
 
+    private async Task GetUserData()
+    {
+        var userName = Preferences.Get("UserName", null);
+        if (string.IsNullOrEmpty(userName))
+        {
+            var firstTimeUsePg = new LoginPage();
+            await Navigation.PushModalAsync(firstTimeUsePg, true);
+        }
 
+    }
     private async Task SaveSessionInDb(SessionDataModel session)
     {
         await Database.Instance.SaveAsync(new SessionEntity
@@ -136,7 +147,7 @@ public partial class MainPage : ContentPage
             _sessionTimer.Stop();
             _totalTime.Stop();
 
-            var confirm = await DisplayAlert("Finish Session?", "Please confirm you'd like to finish the session?", "OK", "Cancel");
+            var confirm = await DisplayAlert("Complete Session", "Please confirm you'd like to complete the session?", "OK", "Cancel");
 
             if (confirm)
             {
