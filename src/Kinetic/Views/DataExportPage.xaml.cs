@@ -34,9 +34,7 @@ public partial class DataExportPage : ContentPage
 
     private void SetLastExportLabel()
     {
-
-        var ex = Preferences.Get("LastExport", null);
-        label_last_exports.Text = ex != null ? DateTime.Parse(ex).ToString("dd/MM/yy HH:mm") : "N/A";
+        label_last_exports.Text = Preferences.Get("LastExport", "N/A");
     }
 
     private async void button_expert_Tapped(object sender, TappedEventArgs e)
@@ -83,7 +81,7 @@ public partial class DataExportPage : ContentPage
 
         activityIndicator.IsRunning = false;
 
-        Preferences.Set("LastExport", DateTime.Now);
+        Preferences.Set("LastExport", DateTime.Now.ToString("dd/MM/yy HH:mm"));
 
         await DisplayAlert("Export Complete", $"Csv exported to {targetFile}", "OK");
         SetLastExportLabel();
