@@ -4,11 +4,11 @@ namespace Kinetic.Presentation.Views;
 
 public partial class SettingPage : ContentPage
 {
-	public SettingPage()
+    public SettingPage()
 	{
 		InitializeComponent();
         SetDeviceInfo();
-
+        SetupPicker();
     }
 
     public void SetDeviceInfo()
@@ -23,5 +23,22 @@ public partial class SettingPage : ContentPage
         label_manufacturer.Text = di.Manfacturer;
         label_model.Text = di.Model;
         label_version.Text = di.AppVersion;
+    }
+
+    private void SetupPicker()
+    {
+        Picker.SelectedIndexChanged += (s, e) =>
+        {
+            var selectedValue = Picker.SelectedItem.ToString();
+            // do something with selectedValue
+            Preferences.Set("UserSensorSpeed", selectedValue);
+        };
+
+        Picker.ItemsSource = new List<string>
+        {
+            SensorSpeed.Fastest.ToString(), SensorSpeed.UI.ToString(), SensorSpeed.Game.ToString(), SensorSpeed.Default.ToString()
+        };
+        
+        Picker.SelectedItem = Preferences.Get("UserSensorSpeed", "Fastest");
     }
 }

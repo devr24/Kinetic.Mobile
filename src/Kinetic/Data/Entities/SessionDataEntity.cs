@@ -11,6 +11,9 @@ public class SessionDataEntity
     public float AccelerometerX { get; set; }
     public float AccelerometerY { get; set; }
     public float AccelerometerZ { get; set; }
+    public float AngularVelocityX { get; set; }
+    public float AngularVelocityY { get; set; }
+    public float AngularVelocityZ { get; set; }
     public double GeoLatitude { get; set; }
     public double GeoLongitude { get; set; }
     public double? GeoAltitude { get; set; }

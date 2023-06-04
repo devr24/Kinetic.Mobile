@@ -1,15 +1,14 @@
-using CommunityToolkit.Maui.Storage;
 using Kinetic.Presentation.Data.Entities;
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Kinetic.Presentation.Views;
 
 public partial class DataExportPage : ContentPage
 {
     private List<SessionEntity> _sessions;
+    private bool _isExporting;
+    private bool _isClearing;
 
-	public DataExportPage()
+    public DataExportPage()
 	{
 		InitializeComponent();
 
@@ -37,74 +36,116 @@ public partial class DataExportPage : ContentPage
         label_last_exports.Text = Preferences.Get("LastExport", "N/A");
     }
 
-    private async void button_expert_Tapped(object sender, TappedEventArgs e)
+    private async void button_export_Tapped(object sender, TappedEventArgs e)
     {
-        ActivityIndicator activityIndicator = new ActivityIndicator
+        if (_isClearing)
         {
-            IsRunning = true,
-            Color = Colors.Turquoise
-        };
-        
-
-        var sessionData = await Database.Instance.GetAsync<SessionDataEntity>();
-        var path = FileSystem.Current.AppDataDirectory;
-
-        var dt = DateTime.Now;
-
-        // Write the file content to the app data directory  
-        string targetFile = Path.Combine(path, $"kinetic_export_{dt:HHmmddMMyy}.csv");
-        using FileStream outputStream = File.OpenWrite(targetFile);
-        using StreamWriter streamWriter = new StreamWriter(outputStream);
-
-
-
-
-        await streamWriter.WriteLineAsync("SessionId,DistanceMovedInKm,AccelerometerX,AccelerometerY,AccelerometerZ,GeoLongitude,GeoLatitude,GeoCourse" +
-                                          ",GeoSpeed,GeoAltitude,GeoVerticalAccuracy,GeoAccuracy,GeoReducedAccuracy,GeoAltitudeReferenceSystem");
-        var counter = 0;
-        foreach (var item in sessionData)
-        {
-            if (counter > 100)
-                await streamWriter.FlushAsync();
-
-            var line =
-                $"{item.SessionId},{item.DistanceMovedInKm},{item.AccelerometerX},{item.AccelerometerY},{item.AccelerometerZ}" +
-                $",{item.GeoLongitude},{item.GeoLatitude},{item.GeoCourse},{item.GeoSpeed},{item.GeoAltitude},{item.GeoVerticalAccuracy}" +
-                $",{item.GeoAccuracy},{item.GeoReducedAccuracy},{item.GeoAltitudeReferenceSystem}";
-            
-            await streamWriter.WriteLineAsync(line);
-            counter++;
+            await DisplayAlert("Export Data", "Can't export data will clearing", "OK");
+            return;
         }
-        await streamWriter.FlushAsync();
-        streamWriter.Close();
-        outputStream.Close();
 
-        activityIndicator.IsRunning = false;
+        if (_isExporting) return;
 
-        Preferences.Set("LastExport", DateTime.Now.ToString("dd/MM/yy HH:mm"));
+        _isExporting = true;
 
-        await DisplayAlert("Export Complete", $"Csv exported to {targetFile}", "OK");
-        SetLastExportLabel();
+        ActivityIndicatorExport.IsRunning = true;
+        var fileName = $"kinetic_export_{DateTime.Now:HHmmddMMyy}.csv";
+        var targetFile = Path.Combine("/storage/emulated/0/Download", fileName);
+
+        try
+        {
+            // IBlobStorage _storage = new BlobStorage(new ConnectionConfig("DefaultEndpointsProtocol=https;AccountName=eswplayground;AccountKey=KV0isNedMfhcRehXIEK9N8pSvdgSZgcYHwVu8Dmu5Cjr7lAQf5HyxH18reR7Pd4+bTD+b9EKk/Ky+AStFmfnMw==;EndpointSuffix=core.windows.net\r\n\r\n"));
+
+            var sessionData = await Database.Instance.GetAsync<SessionDataEntity>();
+            await using FileStream outputStream = File.OpenWrite(targetFile);
+            await using StreamWriter streamWriter = new StreamWriter(outputStream);
+
+            await streamWriter.WriteLineAsync("SessionId,DistanceMovedInKm,AccelerometerX,AccelerometerY,AccelerometerZ,AngularVelocityX,AngularVelocityY,AngularVelocityZ,GeoLongitude,GeoLatitude,GeoCourse," +
+                                              "GeoSpeed,GeoAltitude,GeoVerticalAccuracy,GeoAccuracy,GeoReducedAccuracy,GeoAltitudeReferenceSystem");
+            var counter = 0;
+            foreach (var item in sessionData)
+            {
+                if (counter > 100)
+                    await streamWriter.FlushAsync();
+
+                var line =
+                    $"{item.SessionId},{item.DistanceMovedInKm},{item.AccelerometerX},{item.AccelerometerY},{item.AccelerometerZ}" +
+                    $",{item.AngularVelocityX},{item.AngularVelocityY},{item.AngularVelocityZ}" +
+                    $",{item.GeoLongitude},{item.GeoLatitude},{item.GeoCourse},{item.GeoSpeed},{item.GeoAltitude},{item.GeoVerticalAccuracy}" +
+                    $",{item.GeoAccuracy},{item.GeoReducedAccuracy},{item.GeoAltitudeReferenceSystem}";
+
+                await streamWriter.WriteLineAsync(line);
+                counter++;
+            }
+            await streamWriter.FlushAsync();
+            streamWriter.Close();
+            outputStream.Close();
+
+            // await _storage.UploadBlob(targetFile,$"/POC/{fileName}");
+
+            Preferences.Set("LastExport", DateTime.Now.ToString("dd/MM/yy HH:mm"));
+            await DisplayAlert("Export Complete", $"Csv exported to {targetFile}", "OK");
+            SetLastExportLabel();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Export Failed", $"Csv attempted to export to {targetFile}. Please try again: {ex.Message}", "OK");
+        }
+        finally
+        {
+            ActivityIndicatorExport.IsRunning = false;
+            _isExporting = false;
+        }
     }
 
     private async void button_clear_data_Tapped(object sender, TappedEventArgs e)
     {
+        if (_isExporting)
+        {
+            await DisplayAlert("Clear Data", "Can't clear data will exporting", "OK");
+            return;
+        }
+
+        if (_isClearing) return;
+        _isClearing = true;
 
         var confirm = await DisplayAlert("Clear Data", "Please confirm you'd like to clear all device data?", "OK", "Cancel");
 
         if (confirm)
         {
-            await Database.Instance.PurgeAsync<SessionDataEntity>();
-            await Database.Instance.PurgeAsync<SessionEntity>();
+            ActivityIndicatorClear.IsRunning = true;
+            
+            Task myTask = Task.Run(async () =>
+            {
+                try
+                {
+                    await Database.Instance.PurgeAsync<SessionDataEntity>();
+                    await Database.Instance.PurgeAsync<SessionEntity>();
+
+                    await MainThread.InvokeOnMainThreadAsync(() => { label_session.Text = "0"; });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error occurred: " + ex.Message);
+                    await MainThread.InvokeOnMainThreadAsync(() => DisplayAlert("Clear Failed", $"Please try again: {ex.Message}", "OK"));
+                }
+            }).ContinueWith(async task =>
+            {
+                Console.WriteLine("Task has completed");
+                // Insert additional code to run after the Task completes here.
+                await MainThread.InvokeOnMainThreadAsync(() => ActivityIndicatorClear.IsRunning = false);
+                _isClearing = false;
+            });
+
+            await myTask;
         }
 
-
-        label_session.Text = "0";
     }
 
     public async Task WriteFile(string filename, string content)
     {
-        var downloadsDirectory = FileSystem.AppDataDirectory; // as a fallback
+        //var docsDirectory = Envi.GetExternalFilesDir(Environment.DirectoryDcim);
+        var downloadsDirectory = "/storage/emulated/0/Download"; // FileSystem.AppDataDirectory; // as a fallback
 
         if (DeviceInfo.Platform == DevicePlatform.iOS)
         {

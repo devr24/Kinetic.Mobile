@@ -48,12 +48,7 @@ public class Database
         var items = _connection.Table<T>();
         return await items.ToListAsync();
     }
-
-    public async Task<int> CountAsync<T>() where T:new()
-    {
-        return await _connection.Table<T>().CountAsync();
-    }
-
+    
     public Task<int> SaveAsync<T>(T data)
     {
         return _connection.InsertOrReplaceAsync(data);

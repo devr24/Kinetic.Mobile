@@ -46,7 +46,11 @@
                             <Label Text="Email:  " FontSize="Medium" />
                             <Label x:Name="label_Email" Text="joe.bloggs@gmails.com" FontSize="Medium" />
                         </HorizontalStackLayout>
-                        
+
+                        <HorizontalStackLayout>
+                            <Label Text="Sensor Speed:  " FontSize="Medium" Margin="0,9" />
+                            <Picker x:Name="Picker" Title="Select sensor speed"></Picker>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
 
                 </Border>

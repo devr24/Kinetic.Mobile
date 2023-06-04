@@ -14,7 +14,8 @@
     <Shell.TitleView>
         <StackLayout>
             <Image Source="blue_logo.png" VerticalOptions="Center" HorizontalOptions="Center" 
-                   WidthRequest="200" HeightRequest="80" Scale="1.4" />
+                   WidthRequest="200" HeightRequest="80" Scale="1.4" />        <ActivityIndicator IsRunning="{Binding IsBusy}" />
+
         </StackLayout>
     </Shell.TitleView>
 
@@ -67,42 +68,47 @@
                
 
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="button_expert_Tapped"/>
+                        <TapGestureRecognizer Tapped="button_export_Tapped"/>
                     </Border.GestureRecognizers>
-                    <Label
-                                FontSize="Medium"
-                                FontAttributes="Bold"
-                                TextColor="White"
-                                Text="Export"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"/>
 
+                    <HorizontalStackLayout HorizontalOptions="Center">
+                        <ActivityIndicator Color="White" x:Name="ActivityIndicatorExport" />
+                        <Label
+                            FontSize="Medium"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            Margin="0,0,35,0"
+                            Text="Export"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
                 </Border>
                 <!--End Regular Button-->
 
                 <!--Outline Button-->
                 <Border
-                           x:Name="button_clear_data"
-                           Stroke="{StaticResource MainTheme}"
-                           StrokeThickness="1"
-                           StrokeShape="RoundRectangle 5"
-                            HeightRequest="50"
-                    Margin="0,5"
-                              >
+                   x:Name="button_clear_data"
+                   Stroke="{StaticResource MainTheme}"
+                   StrokeThickness="1"
+                   StrokeShape="RoundRectangle 5"
+                   HeightRequest="50"
+                   Margin="0,5">
+
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="button_clear_data_Tapped"/>
                     </Border.GestureRecognizers>
 
-                    <Label
-                                FontSize="Medium"
-                                FontAttributes="Bold"
-                                TextColor="{StaticResource MainTheme}"
-                                Text="Clear Data"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center">
-
-
-                    </Label>
+                    <HorizontalStackLayout HorizontalOptions="Center" >
+                        <ActivityIndicator Color="Turquoise" x:Name="ActivityIndicatorClear" />
+                        <Label
+                            FontSize="Medium"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource MainTheme}"
+                            Text="Clear Data"
+                            Margin="0,0,25,0"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
 
                 </Border>
                 <!--End Outline Button-->

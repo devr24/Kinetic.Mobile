@@ -2,12 +2,17 @@
 
 namespace Kinetic.Presentation.Filters
 {
-    public class LowPassFilter
+    public interface INoiseFilter
+    {
+        Vector3 Filter(Vector3 input);
+    }
+
+    public class NoiseFilter : INoiseFilter
     {
         private readonly double _alpha;
         private Vector3 _lastOutput;
 
-        public LowPassFilter(double alpha)
+        public NoiseFilter(double alpha)
         {
             _alpha = alpha;
         }

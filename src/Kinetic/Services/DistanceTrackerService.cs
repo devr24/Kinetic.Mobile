@@ -5,7 +5,7 @@ namespace Kinetic.Presentation.Services
 {
     public class DistanceTrackingEventArgs 
     {
-        public TrackingData TrackingData { get; set; }
+        public List<TrackingData> TrackingData { get; set; }
     }
 
     public class TrackingData
@@ -13,125 +13,185 @@ namespace Kinetic.Presentation.Services
         public Vector3 AccelerometerReading { get; set; }
         public double DistanceMoved { get; set; }
         public Location GeoLocation { get; set; }
+        public Vector3 AngularVelocity { get; set; }
+        public SensorSpeed SensorSpeed { get; set; }
     }
 
     public class DistanceTracker
     {
-        private Location _previousLocation;
-        private double _distance;
-        private Vector3 _accelerometerData;
-        private bool _trackingEnabled;
-        private bool _isTracking;
-        private readonly double _accelerometerThreshold = 0.15;  // You might need to adjust this value for your needs
-        private DateTime _lastReadingTime = DateTime.MinValue;
-        private readonly TimeSpan _readingInterval = TimeSpan.FromMilliseconds(500);
-        private readonly LowPassFilter _lowPassFilter = new (0.9);
-        private Timer _timer;
+        private readonly Queue<TrackingData> _trackingDataQueue = new();
+        private SensorSpeed _sensorSpeed;
+        private INoiseFilter _filter;
+        private Timer _trackingTimer;
+
+        private double _lastDistanceData;
+        private Location _lastLocationData;
+        private Vector3 _lastAccelerometerData;
+        private Vector3 _lastGyroData;
+
+        private bool _isCapturingDistance;
+        private bool _isCapturingTracking;
+
+        // private readonly double _accelerometerThreshold = 0.15;  // need to adjust this value for your needs
+        //private DateTime _lastLocationReadTime;
+        private TimeSpan _locationReadIntervalMs;
+        private readonly object _lockObject = new();
+
         public event EventHandler<DistanceTrackingEventArgs> TrackingCaptured;
 
-        public void StartTracking()
+        public TrackingData LastTrackingData => new()
         {
-            if (_trackingEnabled) return;
-            
-            // Register for accelerometer changes, speed = fastest
-            _distance = 0;
-            _trackingEnabled = true;
-            _timer = new Timer(Callback,null,1000,1000);
-            Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
-            Accelerometer.Start(SensorSpeed.Default);
+            GeoLocation = _lastLocationData,
+            DistanceMoved = _lastDistanceData,
+            AccelerometerReading = _lastAccelerometerData,
+            AngularVelocity = _lastGyroData,
+            SensorSpeed = _sensorSpeed
+        };
+
+        public void StartTracking(SensorSpeed sensorSpeed, double locationReadIntervalMs = 5000, INoiseFilter filter = null)
+        {
+            if (_isCapturingTracking) return;
+
+            _filter = filter;
+            _sensorSpeed = sensorSpeed;
+            _locationReadIntervalMs = TimeSpan.FromMilliseconds(locationReadIntervalMs);
+
+            InitialiseTrackingValues();
         }
 
-        private void Callback(object state)
+        private void InitialiseTrackingValues()
         {
-            TrackingCaptured?.Invoke(null, new DistanceTrackingEventArgs { TrackingData = LastTrackingData});
+            _isCapturingTracking = true;
+            _trackingTimer = new Timer(TrackingTimerCallback, null, 1000, 1000);
+
+            if (Accelerometer.IsSupported && !Accelerometer.IsMonitoring)
+            {
+                Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
+                Accelerometer.Start(_sensorSpeed);
+            }
+            if (Gyroscope.IsSupported && !Gyroscope.IsMonitoring)
+            {
+                Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
+                Gyroscope.Start(_sensorSpeed);
+            }
+
+            TrackDistance().ConfigureAwait(false);
         }
 
         public void StopTracking()
         {
-            if (! _trackingEnabled) return;
+            if (! _isCapturingTracking) return;
 
-            // Register for accelerometer changes, speed = fastest
-            Accelerometer.ReadingChanged -= Accelerometer_ReadingChanged;
-            Accelerometer.Stop();
-            _timer?.Dispose();
-            _timer = null;
-            _trackingEnabled = false;
-            _isTracking = false;
+            ResetTrackingValues();
         }
 
-        public TrackingData LastTrackingData =>
-            new()
-            {
-                GeoLocation = _previousLocation,
-                DistanceMoved = _distance,
-                AccelerometerReading = _accelerometerData
-            };
-
-        private async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
+        private void ResetTrackingValues()
         {
-            var now = DateTime.Now;
-
-            // Check if enough time has passed since last reading
-            if ((now - _lastReadingTime) > _readingInterval)
+            // Register for accelerometer changes, speed = fastest
+            if (Accelerometer.IsSupported && Accelerometer.IsMonitoring)
             {
-                _lastReadingTime = now;
+                Accelerometer.ReadingChanged -= Accelerometer_ReadingChanged;
+                Accelerometer.Stop();
+            }
+            if (Gyroscope.IsSupported && Gyroscope.IsMonitoring)
+            {
+                Gyroscope.ReadingChanged -= Gyroscope_ReadingChanged;
+                Gyroscope.Stop();
+            }
 
-                var data = e.Reading;
-                var filteredData = _lowPassFilter.Filter(new Vector3(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z));
+            _trackingTimer?.Dispose();
+            _trackingTimer = null;
+            _isCapturingTracking = false;
+            _isCapturingDistance = false;
+            _lastDistanceData = 0;
+            _filter = null;
+        }
 
-                // Check if device is in motion
-                if (Math.Abs(filteredData.X) > _accelerometerThreshold ||
-                    Math.Abs(filteredData.Y) > _accelerometerThreshold ||
-                    Math.Abs(filteredData.Z) > _accelerometerThreshold)
+        private void TrackingTimerCallback(object state)
+        {
+            lock (_lockObject)
+            {
+                var data = new List<TrackingData>();
+                for (int i = 0; i < _trackingDataQueue.Count; i++)
                 {
-                    // Device in motion, start tracking if not already
-                    if (!_isTracking)
-                    {
-                        _accelerometerData = filteredData;
-                        _isTracking = true;
-                        await TrackDistance();
-                    }
+                    data.Add(_trackingDataQueue.Dequeue());
                 }
-                else
-                {
-                    // Device not in motion, stop tracking
-                    _isTracking = false;
-                }
+                TrackingCaptured?.Invoke(null, new DistanceTrackingEventArgs { TrackingData = data });
             }
         }
 
+        private void Gyroscope_ReadingChanged(object sender, GyroscopeChangedEventArgs e)
+        {
+            _lastGyroData = e.Reading.AngularVelocity;
+            _trackingDataQueue.Enqueue(LastTrackingData);
+        }
+
+        private void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
+        {
+            _lastAccelerometerData = e.Reading.Acceleration;
+            _trackingDataQueue.Enqueue(LastTrackingData);
+        }
+
+        //private async Task GetLocation() 
+        //{
+        //    var now = DateTime.Now;
+
+        //    // Check if enough time has passed since last reading
+        //    if ((now - _lastLocationReadTime) > _locationReadInterval)
+        //    {
+        //        _lastLocationReadTime = now;
+                
+        //        Vector3 filteredData = _filter != null ? _filter.Filter(_lastAccelerometerData) : _lastAccelerometerData;
+
+        //        // Check if device is in motion
+        //        if (Math.Abs(filteredData.X) > _accelerometerThreshold ||
+        //            Math.Abs(filteredData.Y) > _accelerometerThreshold ||
+        //            Math.Abs(filteredData.Z) > _accelerometerThreshold)
+        //        {
+        //            // Device in motion, start tracking if not already
+        //            if (!_isCapturingDistance)
+        //            {
+        //                _lastAccelerometerData = filteredData;
+        //                _isCapturingDistance = true;
+        //                await TrackDistance();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // Device not in motion, stop tracking
+        //            _isCapturingDistance = false;
+        //        }
+        //    }
+        //}
+
         private async Task TrackDistance()
         {
-            while (_isTracking)
+            _isCapturingDistance = true;
+            while (_isCapturingDistance)
             {
                 try
                 {
                     var request = new GeolocationRequest(GeolocationAccuracy.Best);
                     var location = await Geolocation.GetLocationAsync(request);
 
-                    if (location != null)
+                    if (location != null && _lastLocationData != null)
                     {
                         Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-
-                        if (_previousLocation != null)
-                        {
-                            _distance = Location.CalculateDistance(_previousLocation, location, DistanceUnits.Kilometers);
-                            Console.WriteLine($"Distance: {_distance} km");
-                        }
-
-                        _previousLocation = location;
+                        _lastDistanceData = Location.CalculateDistance(_lastLocationData, location, DistanceUnits.Kilometers);
+                        Console.WriteLine($"Distance: {_lastDistanceData} km");
                     }
+                    _lastLocationData = location;
+                    _trackingDataQueue.Enqueue(LastTrackingData);
                 }
                 catch (Exception ex)
                 {
                     // Handle exceptions here
+                    Console.WriteLine($"Error Gathering GeoData: {ex.Message}");
                 }
 
                 // Delay for a bit before getting next reading to save power
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                await Task.Delay(_locationReadIntervalMs);
             }
         }
     }
-
-
 }

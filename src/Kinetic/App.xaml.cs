@@ -14,9 +14,7 @@ public partial class App : Application
             await Database.Instance.InitializeKinetictTables();
         });
 
-        MainPage = new AppShell();
-
-		Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(CustomEntry),
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(CustomEntry),
 			(handler, view) =>
 			{
 #if __ANDROID__
@@ -26,5 +24,7 @@ public partial class App : Application
 				handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
 #endif
 			} );
-	}
+		
+        MainPage = new AppShell();
+    }
 }

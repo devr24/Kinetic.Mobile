@@ -38,8 +38,8 @@ public partial class MainPage : ContentPage
             var firstTimeUsePg = new LoginPage();
             await Navigation.PushModalAsync(firstTimeUsePg, true);
         }
-
     }
+
     private async Task SaveSessionInDb(SessionDataModel session)
     {
         await Database.Instance.SaveAsync(new SessionEntity
@@ -62,8 +62,13 @@ public partial class MainPage : ContentPage
 
     private async void _tracker_TrackingCaptured(object sender, DistanceTrackingEventArgs e)
     {
-        _trackingData.Enqueue(e.TrackingData);
-        _totalDistance += e.TrackingData.DistanceMoved;
+        for (int i = 0; i < e.TrackingData.Count; i++)
+        {
+            var item = e.TrackingData[i];
+            _trackingData.Enqueue(item);
+            _totalDistance += item.DistanceMoved;
+        }
+
 
         if (_trackingData.Count > TrackingDataBatchSize)
         {
@@ -94,7 +99,10 @@ public partial class MainPage : ContentPage
                 DistanceMovedInKm = record.DistanceMoved,
                 AccelerometerX = record.AccelerometerReading.X,
                 AccelerometerY = record.AccelerometerReading.Y,
-                AccelerometerZ = record.AccelerometerReading.Z
+                AccelerometerZ = record.AccelerometerReading.Z,
+                AngularVelocityX = record.AngularVelocity.X,
+                AngularVelocityY = record.AngularVelocity.Y,
+                AngularVelocityZ = record.AngularVelocity.Z
             };
             if (record.GeoLocation != null)
             {
@@ -125,7 +133,7 @@ public partial class MainPage : ContentPage
         await MainThread.InvokeOnMainThreadAsync(() =>
         {
             label_time.Text = elapsedTime;
-            label_distance.Text = $"{_totalDistance:0.0} km";
+            label_distance.Text = $"{_totalDistance:00.0} km";
         });
     }
 
@@ -133,10 +141,11 @@ public partial class MainPage : ContentPage
     {
         if (!_sessionTimer.Enabled)
         {
+            var sensorSpeed = (SensorSpeed)Enum.Parse(typeof(SensorSpeed), Preferences.Get("UserSensorSpeed", "Fastest"));
             _currentSession = new SessionDataModel(DateTime.Now);
             _sessionTimer.Start();
             _totalTime.Start();
-            _tracker.StartTracking();
+            _tracker.StartTracking(sensorSpeed);
             _totalDistance = 0;
             label_time.Text = "00:00:00";
             lbl_SessionStartStop.Text = "Stop Session";
