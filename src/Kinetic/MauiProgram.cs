@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Kinetic.Presentation.Views;
 using Microsoft.Extensions.Logging;
 
 namespace Kinetic;
@@ -11,16 +12,23 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.UseMauiCommunityToolkit()
-			.ConfigureFonts(fonts =>
+        	.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+			}); 
+        
+        builder.Services.AddTransient<MainPage>();
 
-#if DEBUG
-		builder.Logging.AddDebug();
+#if __ANDROID__
+		builder.Services.AddTransient<IServiceTest, DemoServices>();
 #endif
 
-		return builder.Build();
+
+#if DEBUG
+        builder.Logging.AddDebug();
+#endif
+
+        return builder.Build();
 	}
 }
